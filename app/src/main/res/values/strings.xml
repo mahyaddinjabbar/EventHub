@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">My_app</string>
+    <string name="login">Login</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login_button">Login</string>
+    <string name="register_text">Don\'t have an account? Register</string>
+    <string name="register">Register\n</string>
+    <string name="back"><![CDATA[< Back]]></string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="plus">+</string>
+    <string name="back_home"><![CDATA[<Back]]></string>
+    <string name="add_event">Add Event</string>
+    <string name="event_name">Event Name</string>
+    <string name="event_description">Event Description</string>
+    <string name="event_location">Event Location</string>
+    <string name="amount_of_people">People</string>
+    <string name="event_date">Event Date</string>
+    <string name="button_submit_event">Submit</string>
+    <string name="discover_local_events_in_azerbaijan">Discover local events in Azerbaijan</string>
+    <string name="bakuevents">BakuEvents</string>
+    <string name="logout">Log out</string>
+</resources>
