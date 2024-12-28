@@ -1,6 +1,7 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.data.manager
 
 import android.util.Log
+import com.mahyaddin.my_app.data.model.Event
 
 object EventManager {
     private val eventList = mutableListOf<Event>()

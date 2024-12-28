@@ -1,4 +1,4 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.data.model
 
 import kotlin.random.Random
 
@@ -10,5 +10,4 @@ data class Event(
     val amountOfPeople: Int,
     val date: String,
     var isJoined: Boolean
-
 )

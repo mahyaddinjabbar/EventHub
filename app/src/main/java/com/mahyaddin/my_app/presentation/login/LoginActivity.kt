@@ -1,4 +1,4 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.presentation.login
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,6 +15,10 @@ import android.text.style.ForegroundColorSpan
 import android.text.method.LinkMovementMethod
 import android.graphics.Color
 import android.view.View
+import com.mahyaddin.my_app.R
+import com.mahyaddin.my_app.data.manager.UserManager
+import com.mahyaddin.my_app.presentation.home.HomeActivity
+import com.mahyaddin.my_app.presentation.register.RegisterActivity
 
 class LoginActivity : AppCompatActivity() {
 

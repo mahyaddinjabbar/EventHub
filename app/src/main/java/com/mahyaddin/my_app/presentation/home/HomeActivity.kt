@@ -1,4 +1,4 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.presentation.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -10,6 +10,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.mahyaddin.my_app.R
+import com.mahyaddin.my_app.data.manager.UserManager
+import com.mahyaddin.my_app.data.manager.EventManager
+import com.mahyaddin.my_app.data.model.Event
+import com.mahyaddin.my_app.presentation.addevent.AddEventActivity
+import com.mahyaddin.my_app.presentation.joinedevents.JoinedEventsActivity
+import com.mahyaddin.my_app.presentation.login.LoginActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var eventListLayout: LinearLayout

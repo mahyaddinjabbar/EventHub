@@ -1,50 +1,46 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.data.manager
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-
-
-
-data class User(val email: String, val password: String, val name: String, val surname: String)
+import com.mahyaddin.my_app.data.model.User
 
 object UserManager {
+
     private var currentUser: User? = null
     private var sharedPreferences: SharedPreferences? = null
 
-
-    fun start(context: Context){
-        sharedPreferences =
-            context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
+    fun start(context: Context) {
+        sharedPreferences = context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
 
     }
 
     // Method to add a new user
     fun addUser(email: String, password: String, name: String, surname: String) {
-        with(sharedPreferences?.edit()){
-            this?.putString("email", email)
-            this?.putString("password", password)
-            this?.putString("name", name)
-            this?.putString("surname", surname)
-            this?.apply()
+        sharedPreferences?.edit()?.apply {
+            putString("email", email)
+            putString("password", password)
+            putString("name", name)
+            putString("surname", surname)
+            apply()
         }
     }
 
     // Method to check if a user with given email exists
     fun isUserExists(email: String): Boolean {
-        var savedEmail = sharedPreferences?.getString("email","")
+        val savedEmail = sharedPreferences?.getString("email", "")
         return savedEmail == email
     }
 
     // Method to verify user credentials and set the current user
     fun verifyUserCredentials(email: String, password: String): Boolean {
         sharedPreferences?.let { preferences ->
-            var savedEmail = preferences.getString("email","")
-            var savedPassword = preferences.getString("password","")
-            var savedName = preferences.getString("name","")?:""
-            var savedSurname = preferences.getString("surname","")?:""
+            val savedEmail = preferences.getString("email", "")
+            val savedPassword = preferences.getString("password", "")
+            val savedName = preferences.getString("name", "") ?: ""
+            val savedSurname = preferences.getString("surname", "") ?: ""
             return if (savedEmail == email && savedPassword == password) {
-                currentUser = User(savedEmail, savedPassword, savedName, savedSurname )
+                currentUser = User(savedEmail, savedPassword, savedName, savedSurname)
                 true
             } else {
                 false

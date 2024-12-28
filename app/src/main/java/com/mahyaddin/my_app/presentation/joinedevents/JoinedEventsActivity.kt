@@ -1,4 +1,4 @@
-package com.mahyaddin.my_app
+package com.mahyaddin.my_app.presentation.joinedevents
 
 import android.os.Bundle
 import android.util.Log
@@ -6,6 +6,9 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.mahyaddin.my_app.R
+import com.mahyaddin.my_app.data.manager.UserManager
+import com.mahyaddin.my_app.data.manager.EventManager
 
 class JoinedEventsActivity : AppCompatActivity() {
     private lateinit var joinedEventListLayout: LinearLayout
@@ -19,9 +22,7 @@ class JoinedEventsActivity : AppCompatActivity() {
         displayJoinedEvents()
 
         val backButton = findViewById<Button>(R.id.button_back_home)
-        backButton.setOnClickListener {
-            finish()
-        }
+        backButton.setOnClickListener { finish() }
     }
 
     private fun displayJoinedEvents() {
