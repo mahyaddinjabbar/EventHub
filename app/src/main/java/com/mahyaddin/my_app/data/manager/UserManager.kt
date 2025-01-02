@@ -3,7 +3,7 @@ package com.mahyaddin.my_app.data.manager
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-import com.mahyaddin.my_app.data.model.User
+import com.mahyaddin.my_app.data.model.user.User
 
 object UserManager {
 
@@ -12,11 +12,13 @@ object UserManager {
 
     fun start(context: Context) {
         sharedPreferences = context.getSharedPreferences("MySharedPref", MODE_PRIVATE)
-
     }
 
     // Method to add a new user
     fun addUser(email: String, password: String, name: String, surname: String) {
+
+
+
         sharedPreferences?.edit()?.apply {
             putString("email", email)
             putString("password", password)
@@ -40,7 +42,7 @@ object UserManager {
             val savedName = preferences.getString("name", "") ?: ""
             val savedSurname = preferences.getString("surname", "") ?: ""
             return if (savedEmail == email && savedPassword == password) {
-                currentUser = User(savedEmail, savedPassword, savedName, savedSurname)
+                currentUser = User(savedEmail, savedPassword,"", savedName, savedSurname)
                 true
             } else {
                 false

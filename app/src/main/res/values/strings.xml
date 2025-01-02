@@ -5,10 +5,11 @@
     <string name="password">Password</string>
     <string name="login_button">Login</string>
     <string name="register_text">Don\'t have an account? Register</string>
-    <string name="register">Register\n</string>
+    <string name="register">Register</string>
     <string name="back"><![CDATA[< Back]]></string>
     <string name="name">Name</string>
     <string name="surname">Surname</string>
+    <string name="phone">Phone Number</string>
     <string name="plus">+</string>
     <string name="back_home"><![CDATA[<Back]]></string>
     <string name="add_event">Add Event</string>
@@ -19,6 +20,11 @@
     <string name="event_date">Event Date</string>
     <string name="button_submit_event">Submit</string>
     <string name="discover_local_events_in_azerbaijan">Discover local events in Azerbaijan</string>
-    <string name="bakuevents">BakuEvents</string>
+    <string name="title">EventHub</string>
     <string name="logout">Log out</string>
+    <string name="common_error_message">Something went wrong, please try again!</string>
+    <string name="action_join">Join</string>
+    <string name="joined_events">Joined Events</string>
+    <string name="my_events">My Events</string>
+    <string name="date_hint">__/__/____</string>
 </resources>

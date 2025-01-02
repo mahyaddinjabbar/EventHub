@@ -5,28 +5,49 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.RecyclerView
 import com.mahyaddin.my_app.R
-import com.mahyaddin.my_app.data.manager.UserManager
-import com.mahyaddin.my_app.data.manager.EventManager
-import com.mahyaddin.my_app.data.model.Event
+import com.mahyaddin.my_app.data.manager.DatabaseManager
+import com.mahyaddin.my_app.data.model.event.Event
 import com.mahyaddin.my_app.presentation.addevent.AddEventActivity
+import com.mahyaddin.my_app.presentation.friends.FriendsActivity
+import com.mahyaddin.my_app.presentation.home.list.EventListAdapter
 import com.mahyaddin.my_app.presentation.joinedevents.JoinedEventsActivity
 import com.mahyaddin.my_app.presentation.login.LoginActivity
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var eventListLayout: LinearLayout
+
+    private val adapter by lazy {
+        EventListAdapter { event ->
+            DatabaseManager.joinEvent(event,
+                onSuccess = {
+                    Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
+                },
+                onFailure = {
+                    Toast.makeText(this@HomeActivity, getString(R.string.common_error_message), Toast.LENGTH_SHORT).show()
+                }
+            )
+        }
+    }
+
+    private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerEvents) }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        eventListLayout = findViewById(R.id.event_list_layout)
+        recyclerView.adapter = adapter
+        // Dynamically create views for each event and add them to the layout
+        DatabaseManager.notJoinedEvents.observe(this) { events ->
+            adapter.setData(events, false)
+        }
 
         val createEventButton = findViewById<Button>(R.id.button_create_event)
         createEventButton.setOnClickListener {
@@ -35,14 +56,23 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val logOutButton = findViewById<Button>(R.id.button_logout)
+        val logOutButton = findViewById<ImageView>(R.id.imageLogout)
         logOutButton.setOnClickListener {
             Log.d("HomeActivity", "Log out button clicked")
-            UserManager.logout()  // Ensure current user is logged out
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK  // Clear activity stack
+            DatabaseManager.logout(
+                onSuccess = {
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK  // Clear activity stack
+                    startActivity(intent)
+                    finish()
+                }
+            )
+        }
+
+        val imageMyFriend = findViewById<ImageView>(R.id.imageMyFriends)
+        imageMyFriend.setOnClickListener {
+            val intent = Intent(this, FriendsActivity::class.java)
             startActivity(intent)
-            finish()
         }
 
         val joinedEventsButton = findViewById<Button>(R.id.button_joined_events)
@@ -50,26 +80,6 @@ class HomeActivity : AppCompatActivity() {
             Log.d("HomeActivity", "Joined events button clicked")
             val intent = Intent(this, JoinedEventsActivity::class.java)
             startActivity(intent)
-        }
-
-        displayEvents()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        displayEvents() // Refresh events list when the activity resumes
-    }
-
-    private fun displayEvents() {
-        eventListLayout.removeAllViews() // Clear the current views
-
-        // Get all events from the EventManager
-        val events = EventManager.getAllEvents()
-
-        // Dynamically create views for each event and add them to the layout
-        for (event in events) {
-            val eventCard = createEventCard(event)
-            eventListLayout.addView(eventCard)
         }
     }
 
@@ -98,8 +108,15 @@ class HomeActivity : AppCompatActivity() {
         val joinButton = Button(this).apply {
             text = "Join"
             setOnClickListener {
-                EventManager.joinEvent(event.id)
-                Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
+                DatabaseManager.joinEvent(event,
+                    onSuccess = {
+                        Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
+                    },
+                    onFailure = {
+                        Toast.makeText(this@HomeActivity, context.getString(R.string.common_error_message), Toast.LENGTH_SHORT).show()
+                    }
+                )
+
             }
         }
 

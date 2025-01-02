@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:name=".EventhubApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,20 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presentation.register.RegisterActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".presentation.home.HomeActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".presentation.addevent.AddEventActivity"
-            android:exported="true">
-        </activity>
-        <activity android:name=".presentation.joinedevents.JoinedEventsActivity"
-            android:exported="true">
-        </activity>
+        <activity
+            android:name=".presentation.register.RegisterActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.home.HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.addevent.AddEventActivity"
+            android:exported="true" />
+        <activity
+            android:name=".presentation.joinedevents.JoinedEventsActivity"
+            android:exported="true" />
 
-
+        <activity
+            android:name=".presentation.friends.FriendsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
