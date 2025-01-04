@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    app:cardElevation="2dp"
-    app:cardUseCompatPadding="true"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="20dp"
-    android:layout_height="wrap_content">
+    app:cardElevation="2dp"
+    app:cardUseCompatPadding="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -121,6 +121,28 @@
             android:layout_marginVertical="12dp"
             android:layout_marginEnd="12dp"
             android:text="@string/action_join"
+            app:layout_constraintBottom_toBottomOf="@id/imageDelete"
+            app:layout_constraintEnd_toStartOf="@id/imageDelete"
+            app:layout_constraintTop_toTopOf="@id/imageDelete" />
+
+        <ImageView
+            android:id="@+id/imageEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_edit"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/imageDelete"
+            app:layout_constraintTop_toBottomOf="@id/linearLocation" />
+
+        <ImageView
+            android:id="@+id/imageDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:src="@drawable/ic_delete"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearLocation" />

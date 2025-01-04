@@ -27,4 +27,9 @@
     <string name="joined_events">Joined Events</string>
     <string name="my_events">My Events</string>
     <string name="date_hint">__/__/____</string>
+    <string name="users">All Users</string>
+    <string name="friends">Friends</string>
+    <string name="for_everyone">Everyone</string>
+    <string name="for_friends">Friends</string>
+    <string name="ticket">TICKET</string>
 </resources>

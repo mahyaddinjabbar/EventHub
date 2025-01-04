@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.mahyaddin.my_app.R
 import com.mahyaddin.my_app.data.manager.DatabaseManager
 import com.mahyaddin.my_app.data.model.event.Event
+import com.mahyaddin.my_app.data.model.event.EventType
+import com.mahyaddin.my_app.presentation.home.HomeActivity
 import java.util.Calendar
 
 class AddEventActivity : AppCompatActivity() {
@@ -21,11 +24,28 @@ class AddEventActivity : AppCompatActivity() {
     private val eventLocationEditText by lazy { findViewById<EditText>(R.id.edit_text_event_location) }
     private val eventAmountOfPeopleEditText by lazy { findViewById<EditText>(R.id.edit_text_event_people) }
     private val eventDate by lazy { findViewById<TextView>(R.id.textDate) }
+    private val radioGroup by lazy { findViewById<RadioGroup>(R.id.radioGroupEventTypes) }
+    private val eventId by lazy { intent.getStringExtra(HomeActivity.EVENT_ID) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_event)
         Log.d("AddEventActivity", "onCreate started")
+
+        DatabaseManager.allEvents.observe(this) { list ->
+            val eventToBeEdited = list.find { it.id == eventId }
+            if (eventToBeEdited != null) {
+                eventNameEditText.setText(eventToBeEdited.name)
+                eventDescriptionEditText.setText(eventToBeEdited.description)
+                eventLocationEditText.setText(eventToBeEdited.location)
+                eventAmountOfPeopleEditText.setText(eventToBeEdited.amountOfPeople.toString())
+                eventDate.text = eventToBeEdited.date
+                when (eventToBeEdited.type) {
+                    EventType.PUBLIC -> radioGroup.check(R.id.buttonPublic)
+                    EventType.PRIVATE -> radioGroup.check(R.id.buttonPrivate)
+                }
+            }
+        }
 
         val backButton = findViewById<Button>(R.id.button_back_home)
         backButton.setOnClickListener { finish() }
@@ -48,6 +68,13 @@ class AddEventActivity : AppCompatActivity() {
             val eventLocation = eventLocationEditText.text.toString()
             val eventAmountOfPeople = eventAmountOfPeopleEditText.text.toString().toIntOrNull() ?: 0
             val eventDate = eventDate.text.toString()
+            val eventType = when (radioGroup.checkedRadioButtonId) {
+                R.id.buttonPublic -> EventType.PUBLIC
+                R.id.buttonPrivate -> EventType.PRIVATE
+                else -> EventType.PUBLIC
+            }
+
+            Log.e("LOG_NEW_EVENT: ", "EVENT TYPE-->$eventType")
 
             if (eventName.isNotEmpty()
                 && eventDescription.isNotEmpty()
@@ -55,21 +82,35 @@ class AddEventActivity : AppCompatActivity() {
                 && eventAmountOfPeople > 0 &&
                 eventDate.isNotEmpty()
             ) {
-                val event = Event(
-                    name = eventName,
-                    description = eventDescription,
-                    location = eventLocation,
-                    amountOfPeople = eventAmountOfPeople,
-                    date = eventDate,
-                )
+                val event = eventId?.let {
+                    Event(
+                        id = it,
+                        name = eventName,
+                        description = eventDescription,
+                        location = eventLocation,
+                        amountOfPeople = eventAmountOfPeople,
+                        date = eventDate,
+                        type = eventType
+                    )
+                } ?: run {
+                    Event(
+                        name = eventName,
+                        description = eventDescription,
+                        location = eventLocation,
+                        amountOfPeople = eventAmountOfPeople,
+                        date = eventDate,
+                        type = eventType
+                    )
+                }
+
                 DatabaseManager.createEvent(
                     event,
                     onSuccess = {
                         Log.d(
                             "AddEventActivity",
-                            "Event added: Name: $eventName, Description: $eventDescription, Location: $eventLocation, Amount of People: $eventAmountOfPeople, Date: $eventDate"
+                            "Event Saved: Name: $eventName, Description: $eventDescription, Location: $eventLocation, Amount of People: $eventAmountOfPeople, Date: $eventDate"
                         )
-                        Toast.makeText(this, "Event added successfully!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Event saved successfully!", Toast.LENGTH_SHORT).show()
                         finish() // Return to the previous activity
                     },
                     onFailure = {

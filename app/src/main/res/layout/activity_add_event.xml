@@ -45,10 +45,10 @@
             android:id="@+id/edit_text_event_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:hint="@string/event_name"
             android:lines="1"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Event Description -->
@@ -89,11 +89,11 @@
             android:id="@+id/edit_text_event_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
             android:drawableEnd="@drawable/ic_location"
             android:hint="@string/event_location"
             android:lines="1"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Event Amount of People -->
@@ -138,6 +138,46 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_event_people" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupEventTypes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="8dp"
+        android:checkedButton="@id/buttonPublic"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textDate">
+
+        <RadioButton
+            android:id="@+id/buttonPublic"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/for_everyone"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/buttonPrivate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:text="@string/for_friends"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RadioGroup>
 
     <!-- Submit Button -->
     <Button

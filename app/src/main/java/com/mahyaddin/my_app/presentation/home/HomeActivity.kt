@@ -6,15 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mahyaddin.my_app.R
 import com.mahyaddin.my_app.data.manager.DatabaseManager
-import com.mahyaddin.my_app.data.model.event.Event
 import com.mahyaddin.my_app.presentation.addevent.AddEventActivity
 import com.mahyaddin.my_app.presentation.friends.FriendsActivity
 import com.mahyaddin.my_app.presentation.home.list.EventListAdapter
@@ -23,20 +19,37 @@ import com.mahyaddin.my_app.presentation.login.LoginActivity
 
 class HomeActivity : AppCompatActivity() {
 
+    companion object {
+        const val EVENT_ID = "EVENT_ID"
+    }
+
     private val adapter by lazy {
-        EventListAdapter { event ->
-            DatabaseManager.joinEvent(event,
-                onSuccess = {
-                    Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
-                },
-                onFailure = {
-                    Toast.makeText(this@HomeActivity, getString(R.string.common_error_message), Toast.LENGTH_SHORT).show()
-                }
-            )
-        }
+        EventListAdapter(
+            delete = { event ->
+                DatabaseManager.deleteEvent(event)
+            },
+
+            edit = {
+                Log.d("HomeActivity", "Edit event button clicked")
+                val intent = Intent(this, AddEventActivity::class.java)
+                intent.putExtra(EVENT_ID,it.id)
+                startActivity(intent)
+            },
+            join = { event ->
+                DatabaseManager.joinEvent(event,
+                    onSuccess = {
+                        Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
+                    },
+                    onFailure = {
+                        Toast.makeText(this@HomeActivity, getString(R.string.common_error_message), Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        )
     }
 
     private val recyclerView by lazy { findViewById<RecyclerView>(R.id.recyclerEvents) }
+    private val createEventButton by lazy { findViewById<Button>(R.id.button_create_event) }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +62,10 @@ class HomeActivity : AppCompatActivity() {
             adapter.setData(events, false)
         }
 
-        val createEventButton = findViewById<Button>(R.id.button_create_event)
+        DatabaseManager.isAdmin.observe(this) { isAdmin ->
+            adapter.setIsAdmin(isAdmin)
+        }
+
         createEventButton.setOnClickListener {
             Log.d("HomeActivity", "Create event button clicked")
             val intent = Intent(this, AddEventActivity::class.java)
@@ -81,48 +97,5 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, JoinedEventsActivity::class.java)
             startActivity(intent)
         }
-    }
-
-    private fun createEventCard(event: Event): CardView {
-        val cardView = CardView(this).apply {
-            radius = 16f
-            setContentPadding(16, 16, 16, 16)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            ).apply {
-                setMargins(16, 16, 16, 16)
-            }
-            cardElevation = 8f
-        }
-
-        val layout = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-        }
-
-        val eventTextView = TextView(this).apply {
-            text = "${event.name}\n${event.description}\n${event.location}\n${event.amountOfPeople} people\n${event.date}\n"
-            textSize = 18f
-        }
-
-        val joinButton = Button(this).apply {
-            text = "Join"
-            setOnClickListener {
-                DatabaseManager.joinEvent(event,
-                    onSuccess = {
-                        Toast.makeText(this@HomeActivity, "Joined ${event.name}", Toast.LENGTH_SHORT).show()
-                    },
-                    onFailure = {
-                        Toast.makeText(this@HomeActivity, context.getString(R.string.common_error_message), Toast.LENGTH_SHORT).show()
-                    }
-                )
-
-            }
-        }
-
-        layout.addView(eventTextView)
-        layout.addView(joinButton)
-        cardView.addView(layout)
-        return cardView
     }
 }

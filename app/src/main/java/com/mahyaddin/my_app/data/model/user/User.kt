@@ -8,9 +8,13 @@ data class User(
     val surname: String = "",
     val email: String = "",
     val password: String = "",
-    val phone: String = ""
+    val phone: String = "",
 ) {
     fun fullName(): String {
         return "$name $surname"
+    }
+
+    fun isAdmin(): Boolean {
+        return email == "admin@gmail.com" && password == "admin2025!"
     }
 }
