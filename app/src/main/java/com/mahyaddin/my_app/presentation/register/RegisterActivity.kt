@@ -39,6 +39,10 @@ class RegisterActivity : AppCompatActivity() {
                     && phoneNumber.isNotEmpty()
                     && email.isNotEmpty()
                     && password.isNotEmpty()
+                    && email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$".toRegex()) // Email validation
+                    && phoneNumber.matches("^\\+?[0-9]{10,13}$".toRegex()) // Phone validation
+                    && password.length >= 8 // Password length validation
+                    && password.matches(".*\\d.*".toRegex()) // Password numeric validation
 
             if (isValidInputs) {
                 if (DatabaseManager.isExistUser(email)) {
@@ -62,8 +66,20 @@ class RegisterActivity : AppCompatActivity() {
                     )
                 }
             } else {
-                // Empty fields
-                showToast("Please fill in all fields")
+                when {
+                    name.isEmpty() || surname.isEmpty() || phoneNumber.isEmpty() || email.isEmpty() || password.isEmpty() -> {
+                        showToast("Please fill in all fields")
+                    }
+                    !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$".toRegex()) -> {
+                        showToast("Invalid email format")
+                    }
+                    !phoneNumber.matches("^\\+?[0-9]{10,13}$".toRegex()) -> {
+                        showToast("Invalid phone number format")
+                    }
+                    password.length < 8 || !password.matches(".*\\d.*".toRegex()) -> {
+                        showToast("Password must be at least 8 characters long and include a number")
+                    }
+                }
             }
         }
     }
