@@ -18,9 +18,8 @@ jobs:
       - name: Get changed Activity and XML files
         id: get-files
         run: |
-          git fetch origin master
-          CHANGED_KT=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.kt$' | head -n 1)
-          CHANGED_XML=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.xml$' | head -n 1)
+          CHANGED_KT=$(git diff --name-only HEAD~1 HEAD | grep '\.kt$' | head -n 1)
+          CHANGED_XML=$(git diff --name-only HEAD~1 HEAD | grep '\.xml$' | head -n 1)
           echo "kt_file=$CHANGED_KT" >> $GITHUB_OUTPUT
           echo "xml_file=$CHANGED_XML" >> $GITHUB_OUTPUT
 
