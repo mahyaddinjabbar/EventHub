@@ -17,7 +17,7 @@ jobs:
       - name: Get changed Activity and XML files
         id: get-files
         run: |
-          git fetch origin main
+          git fetch origin master
           CHANGED_KT=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.kt$' | head -n 1)
           CHANGED_XML=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.xml$' | head -n 1)
           echo "kt_file=$CHANGED_KT" >> $GITHUB_OUTPUT
@@ -28,7 +28,7 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer ${{ secrets.REGRESSAI_TRIGGER_TOKEN }}" \
-            https://api.github.com/repos/your-username/RegressAI/dispatches \
+            https://api.github.com/repos/mahyaddinjabbar/RegressAI/dispatches \
             -d '{
               "event_type": "trigger-test-generation",
               "client_payload": {
