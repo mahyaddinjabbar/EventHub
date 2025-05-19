@@ -1,13 +1,14 @@
 name: Trigger RegressAI Test Generation
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'app/src/main/java/com/mahyaddin/my_app/presentation/**/*.kt'
       - 'app/src/main/res/layout/**/*.xml'
 
 jobs:
-  notify-regressai:
+  trigger:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,15 +25,14 @@ jobs:
           echo "xml_file=$CHANGED_XML" >> $GITHUB_OUTPUT
 
       - name: Trigger RegressAI workflow
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${{ secrets.REGRESSAI_TRIGGER_TOKEN }}" \
-            https://api.github.com/repos/mahyaddinjabbar/RegressAI/dispatches \
-            -d '{
-              "event_type": "trigger-test-generation",
-              "client_payload": {
-                "kt_file": "${{ steps.get-files.outputs.kt_file }}",
-                "xml_file": "${{ steps.get-files.outputs.xml_file }}"
-              }
-            }'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.REGRESSAI_TRIGGER_TOKEN }}
+          repository: mahyaddinjabbar/RegressAI
+          event-type: trigger-test-generation
+          client-payload: >-
+            {
+              "kt_file": "${{ steps.get-files.outputs.kt_file }}",
+              "xml_file": "${{ steps.get-files.outputs.xml_file }}"
+            }
+
