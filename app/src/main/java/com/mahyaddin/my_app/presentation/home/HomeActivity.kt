@@ -57,7 +57,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         recyclerView.adapter = adapter
-        // Dynamically create views for each event and add them to the layout
+        // Dynamically create views for each event and add them to the layout folder
         DatabaseManager.notJoinedEvents.observe(this) { events ->
             adapter.setData(events, false)
         }
