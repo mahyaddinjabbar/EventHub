@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!-- Log Out Button-->
+    <!-- Log Out Button..-->
     <ImageView
         android:id="@+id/imageLogout"
         android:layout_width="wrap_content"
