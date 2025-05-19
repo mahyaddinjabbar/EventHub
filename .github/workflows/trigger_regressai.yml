@@ -1,0 +1,35 @@
+name: Trigger RegressAI Test Generation
+
+on:
+  push:
+    paths:
+      - 'app/src/main/java/com/mahyaddin/my_app/presentation/**/*.kt'
+      - 'app/src/main/res/layout/**/*.xml'
+
+jobs:
+  notify-regressai:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get changed Activity and XML files
+        id: get-files
+        run: |
+          git fetch origin main
+          CHANGED_KT=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.kt$' | head -n 1)
+          CHANGED_XML=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.xml$' | head -n 1)
+          echo "kt_file=$CHANGED_KT" >> $GITHUB_OUTPUT
+          echo "xml_file=$CHANGED_XML" >> $GITHUB_OUTPUT
+
+      - name: Trigger RegressAI workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.REGRESSAI_TRIGGER_TOKEN }}" \
+            https://api.github.com/repos/your-username/RegressAI/dispatches \
+            -d '{
+              "event_type": "trigger-test-generation",
+              "client_payload": {
+                "kt_file": "${{ steps.get-files.outputs.kt_file }}",
+                "xml_file": "${{ steps.get-files.outputs.xml_file }}"
+              }
+            }'
