@@ -15,16 +15,33 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
-
+          # fetch-depth: 0 is generally safer for accurate diffing across multiple commits in a push
+          fetch-depth: 0
 
       - name: Get changed Activity and XML files
         id: get-files
         run: |
-          CHANGED_KT=$(git diff --name-only HEAD~1 HEAD | grep '\.kt$' | head -n 1)
-          CHANGED_XML=$(git diff --name-only HEAD~1 HEAD | grep '\.xml$' | head -n 1)
-          echo "kt_file=$CHANGED_KT" >> $GITHUB_OUTPUT
-          echo "xml_file=$CHANGED_XML" >> $GITHUB_OUTPUT
+          # Get all changed files between the push's 'before' and 'after' (current SHA) commits.
+          # This handles pushes with multiple commits.
+          ALL_CHANGED_FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          echo "All changed files detected in push:"
+          echo "$ALL_CHANGED_FILES"
+
+          # Filter for .kt files within the specified presentation path
+          # and take the first one found, if any.
+          CHANGED_KT=$(echo "$ALL_CHANGED_FILES" | grep -E '^app/src/main/java/com/mahyaddin/my_app/presentation/.*\.kt$' | head -n 1)
+
+          # Filter for .xml files within the specified layout path
+          # and take the first one found, if any.
+          CHANGED_XML=$(echo "$ALL_CHANGED_FILES" | grep -E '^app/src/main/res/layout/.*\.xml$' | head -n 1)
+
+          echo "Selected KT file for payload: ${CHANGED_KT:-No KT file found}"
+          echo "Selected XML file for payload: ${CHANGED_XML:-No XML file found}"
+
+          # Set output variables, using placeholders if no file was found.
+          # This prevents empty strings in the client_payload which can cause parsing issues.
+          echo "kt_file=${CHANGED_KT:-no_kt_file_found}" >> $GITHUB_OUTPUT
+          echo "xml_file=${CHANGED_XML:-no_xml_file_found}" >> $GITHUB_OUTPUT
 
       - name: Trigger RegressAI workflow
         uses: peter-evans/repository-dispatch@v3
@@ -37,5 +54,3 @@ jobs:
               "kt_file": "${{ steps.get-files.outputs.kt_file }}",
               "xml_file": "${{ steps.get-files.outputs.xml_file }}"
             }
-
-
