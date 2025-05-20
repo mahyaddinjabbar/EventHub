@@ -26,7 +26,8 @@
         android:src="@drawable/ic_logout"
         app:layout_constraintBottom_toBottomOf="@id/textTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textTitle" />
+        app:layout_constraintTop_toTopOf="@id/textTitle"
+        tools:ignore="ContentDescription" />
 
     <!-- Log Out Button -->
     <ImageView
@@ -37,7 +38,8 @@
         android:src="@drawable/ic_add_friend"
         app:layout_constraintBottom_toBottomOf="@id/textTitle"
         app:layout_constraintEnd_toStartOf="@id/imageLogout"
-        app:layout_constraintTop_toTopOf="@id/textTitle" />
+        app:layout_constraintTop_toTopOf="@id/textTitle"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/button_joined_events"
