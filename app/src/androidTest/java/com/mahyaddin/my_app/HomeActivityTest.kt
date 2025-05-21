@@ -1,65 +1,81 @@
-Here are some test cases for the given Android activity and XML layout:
-
 ```kotlin
 package com.mahyaddin.my_app.presentation.home
 
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.rule.ActivityTestRule
+import com.mahyaddin.my_app.R
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 
 @RunWith(AndroidJUnit4::class)
 class HomeActivityTest {
 
     @get:Rule
-    var activityRule: ActivityTestRule<HomeActivity> = ActivityTestRule(HomeActivity::class.java)
+    var activityRule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
 
-    // Test case to check if the HomeActivity is launched successfully
+    // Test if the RecyclerView is displayed
     @Test
-    fun test_isActivityInView() {
+    fun test_isEventListVisible_onAppLaunch() {
         onView(withId(R.id.recyclerEvents)).check(matches(isDisplayed()))
     }
 
-    // Test case to check if the RecyclerView is displayed when the HomeActivity is launched
+    // Test if the Create Event Button is displayed
     @Test
-    fun test_visibility_recyclerView() {
-        onView(withId(R.id.recyclerEvents)).check(matches(isDisplayed()))
-    }
-
-    // Test case to check if the create event button is displayed and clickable
-    @Test
-    fun test_createEventButton() {
+    fun test_isCreateEventButtonVisible_onAppLaunch() {
         onView(withId(R.id.button_create_event)).check(matches(isDisplayed()))
-        onView(withId(R.id.button_create_event)).perform(click())
     }
 
-    // Test case to check if the joined events button is displayed and clickable
+    // Test if the Logout Button is displayed
     @Test
-    fun test_joinedEventsButton() {
-        onView(withId(R.id.button_joined_events)).check(matches(isDisplayed()))
-        onView(withId(R.id.button_joined_events)).perform(click())
-    }
-
-    // Test case to check if the logout button is displayed and clickable
-    @Test
-    fun test_logoutButton() {
+    fun test_isLogoutButtonVisible_onAppLaunch() {
         onView(withId(R.id.imageLogout)).check(matches(isDisplayed()))
-        onView(withId(R.id.imageLogout)).perform(click())
     }
 
-    // Test case to check if the friends button is displayed and clickable
+    // Test if the My Friends Button is displayed
     @Test
-    fun test_friendsButton() {
+    fun test_isMyFriendsButtonVisible_onAppLaunch() {
         onView(withId(R.id.imageMyFriends)).check(matches(isDisplayed()))
+    }
+
+    // Test if the Joined Events Button is displayed
+    @Test
+    fun test_isJoinedEventsButtonVisible_onAppLaunch() {
+        onView(withId(R.id.button_joined_events)).check(matches(isDisplayed()))
+    }
+
+    // Test navigation to the Create Event Screen
+    @Test
+    fun test_navCreateEventScreen() {
+        onView(withId(R.id.button_create_event)).perform(click())
+        onView(withId(R.id.activity_create_event)).check(matches(isDisplayed()))
+    }
+
+    // Test navigation to the Login Screen
+    @Test
+    fun test_navLoginScreen() {
+        onView(withId(R.id.imageLogout)).perform(click())
+        onView(withId(R.id.activity_login)).check(matches(isDisplayed()))
+    }
+
+    // Test navigation to the Friends Screen
+    @Test
+    fun test_navFriendsScreen() {
         onView(withId(R.id.imageMyFriends)).perform(click())
+        onView(withId(R.id.activity_friends)).check(matches(isDisplayed()))
+    }
+
+    // Test navigation to the Joined Events Screen
+    @Test
+    fun test_navJoinedEventsScreen() {
+        onView(withId(R.id.button_joined_events)).perform(click())
+        onView(withId(R.id.activity_joined_events)).check(matches(isDisplayed()))
     }
 }
 ```
 
-These test cases cover all the possible cases for the HomeActivity. They check if the activity is launched successfully, if the RecyclerView is displayed, and if all the buttons are displayed and clickable.
+This Kotlin test class uses the Espresso framework to perform UI tests on the HomeActivity. It checks if all the necessary UI components are visible on app launch and tests the navigation to different screens when certain buttons are clicked. Note that the IDs for the destination activities in the navigation tests are placeholders and should be replaced with the actual IDs in your layout files.
