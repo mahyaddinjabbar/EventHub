@@ -74,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
 
         val logOutButton = findViewById<ImageView>(R.id.imageLogout)
         logOutButton.setOnClickListener {
-            Log.d("HomeActivity", "The Log out button clicked")
+            Log.d("HomeActivity", "Log out button clicked")
             DatabaseManager.logout(
                 onSuccess = {
                     val intent = Intent(this, LoginActivity::class.java)
