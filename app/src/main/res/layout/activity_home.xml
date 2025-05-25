@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@id/textTitle"
         tools:ignore="ContentDescription" />
 
-    <!-- Add Friends Button -->
+    <!-- Add Friends Button... -->
     <ImageView
         android:id="@+id/imageMyFriends"
         android:layout_width="wrap_content"
