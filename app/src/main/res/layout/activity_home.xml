@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
@@ -17,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!-- Log Out Button...-->
+    <!-- Log Out Button-->
     <ImageView
         android:id="@+id/imageLogout"
         android:layout_width="wrap_content"
@@ -29,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@id/textTitle"
         tools:ignore="ContentDescription" />
 
-    <!-- Log Out Button -->
+    <!-- Add Friends Button -->
     <ImageView
         android:id="@+id/imageMyFriends"
         android:layout_width="wrap_content"
@@ -51,13 +52,34 @@
         app:layout_constraintEnd_toStartOf="@id/imageMyFriends"
         app:layout_constraintTop_toTopOf="@id/textTitle" />
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/horizontalPager"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/button_joined_events"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Dot Indicator using TabLayout -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:tabIndicatorColor="@android:color/black"
+        app:tabIndicatorHeight="10dp"
+        app:tabSelectedTextColor="@android:color/black"
+        app:tabIndicatorFullWidth="false"
+        app:layout_constraintTop_toBottomOf="@id/horizontalPager"
+        app:layout_constraintBottom_toTopOf="@id/recyclerEvents"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <!-- LinearLayout to display events -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerEvents"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
         android:paddingBottom="30dp"
@@ -65,7 +87,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button_joined_events"
+        app:layout_constraintTop_toBottomOf="@id/tabIndicator"
         tools:listitem="@layout/item_event_list" />
 
     <!-- Plus Button -->

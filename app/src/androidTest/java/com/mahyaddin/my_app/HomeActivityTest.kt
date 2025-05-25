@@ -1,4 +1,3 @@
-```kotlin
 // Required dependencies
 // implementation 'androidx.test.espresso:espresso-core:3.4.0'
 // implementation 'androidx.test.espresso:espresso-intents:3.4.0'
@@ -15,6 +14,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.mahyaddin.my_app.R
 import com.mahyaddin.my_app.presentation.addevent.AddEventActivity
 import com.mahyaddin.my_app.presentation.friends.FriendsActivity
 import com.mahyaddin.my_app.presentation.home.HomeActivity
@@ -77,5 +77,3 @@ class HomeActivityTest {
 
     // Add more tests as needed...
 }
-```
-This test suite covers the basic UI interactions and navigation for the HomeActivity. Note that it does not cover all possible scenarios, such as error states or edge cases, as these would require additional context and setup.

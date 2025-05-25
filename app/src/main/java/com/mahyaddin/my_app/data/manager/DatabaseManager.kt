@@ -23,14 +23,14 @@ object DatabaseManager {
     private val eventRef by lazy { database.getReference("event") }
     private val friendRequestRef by lazy { database.getReference("friendRequest") }
 
-    private val currentUser = MutableLiveData<User>()
-    val isAdmin = currentUser.map { it.isAdmin() }
+    private val currentUser = MutableLiveData<User?>()
+    val isAdmin = currentUser.map { it?.isAdmin() ?: false }
 
     val allEvents = MutableLiveData<List<Event>>()
     private val allUsers = MutableLiveData<List<User>>()
     private val allFriendRequest = MutableLiveData<List<FriendRequest>>()
 
-    val joinedEvents = CombinedLiveData<User, List<Event>, List<Event>>(currentUser, allEvents) { user, events ->
+    val joinedEvents = CombinedLiveData<User?, List<Event>, List<Event>>(currentUser, allEvents) { user, events ->
         return@CombinedLiveData when {
             events == null -> emptyList()
             user == null -> events
@@ -38,7 +38,7 @@ object DatabaseManager {
         }
     }
 
-    val notJoinedEvents = CombinedLiveData<User, List<Event>, List<Event>>(currentUser, allEvents) { user, events ->
+    val notJoinedEvents = CombinedLiveData<User?, List<Event>, List<Event>>(currentUser, allEvents) { user, events ->
         return@CombinedLiveData when {
             events == null -> emptyList()
             user == null -> events
@@ -47,7 +47,7 @@ object DatabaseManager {
     }
 
 
-    private val otherUsers = CombinedLiveData<User, List<User>, List<User>?>(currentUser, allUsers) { user, allUsers ->
+    private val otherUsers = CombinedLiveData<User?, List<User>, List<User>?>(currentUser, allUsers) { user, allUsers ->
         return@CombinedLiveData when {
             user == null -> null
             allUsers == null -> null

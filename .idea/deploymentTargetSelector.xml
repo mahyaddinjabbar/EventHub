@@ -21,10 +21,19 @@
           </targets>
         </DialogSelection>
       </SelectionState>
-      <SelectionState runConfigName="test_isEventListVisible_onAppLaunch()">
+      <SelectionState runConfigName="testVisibility()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="test_navLoginScreen()">
+      <SelectionState runConfigName="testClickJoinedEventsButton()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testCreateEventButton()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testLogoutButton()">
+        <option name="selectionMode" value="DROPDOWN" />
+      </SelectionState>
+      <SelectionState runConfigName="testJoinedEventsButton()">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

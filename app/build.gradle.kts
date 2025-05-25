@@ -50,6 +50,9 @@ dependencies {
     // Add the dependency for the Realtime Database library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation("com.google.firebase:firebase-database")
+    implementation(libs.androidx.room.external.antlr)
+    implementation(libs.androidx.espresso.intents)
+    implementation(libs.androidx.espresso.contrib)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
